@@ -1,0 +1,5 @@
+#Additional
+.env
+
+#Dependency directories
+node_modules/
