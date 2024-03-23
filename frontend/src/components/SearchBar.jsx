@@ -1,3 +1,5 @@
+import { Calendar } from "./ui/calendar";
+
 const SearchBar = () => {
   return (
     <div>
@@ -6,6 +8,7 @@ const SearchBar = () => {
         type="text"
         placeholder="Location"
       />
+      <Calendar />
     </div>
   );
 };
