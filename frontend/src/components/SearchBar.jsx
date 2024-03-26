@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 const SearchBar = () => {
   return (
-    <div className="mx-16 mb-16 flex w-full min-w-0 items-end justify-center gap-4 rounded-md bg-slate-200 px-20 py-16">
+    <div className="flex w-full min-w-0 items-end justify-center gap-4">
       <div className="flex w-full flex-1 flex-col">
         <label className="my-2 text-gray-500" htmlFor="location">
           Location
