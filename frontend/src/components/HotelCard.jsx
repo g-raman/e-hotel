@@ -1,3 +1,4 @@
+import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
@@ -32,6 +33,7 @@ const HotelCard = () => {
       <CardFooter className="flex flex-col items-start p-4 pt-0">
         <span>4 people</span>
         <span>Sea view</span>
+        <Button className="mt-4 w-full">Book now</Button>
       </CardFooter>
     </Card>
   );
