@@ -19,7 +19,7 @@ const SearchBar = () => {
       </div>
 
       <div className="flex h-full w-full flex-col">
-        <label className="my-2 text-gray-500">Check-in</label>
+        <label className="my-2 text-gray-500">Guests</label>
         <Counter min={1} max={10} icon="🧑" />
       </div>
 
