@@ -32,13 +32,13 @@ const Counter = ({
       <Button
         disabled={decrementEnabled}
         onClick={handleDecrement}
-        variant="secondary"
-        className="h-10"
+        variant="outline"
+        className="size-12"
       >
         -
       </Button>
 
-      <div className="flex w-full items-center justify-center gap-4 rounded-md bg-gray-100 px-4">
+      <div className="flex w-1/2 flex-1 items-center justify-center gap-4 rounded-md bg-secondary px-4">
         <span>{icon}</span>
         <span>{count}</span>
       </div>
@@ -46,8 +46,8 @@ const Counter = ({
       <Button
         disabled={incrementEnabled}
         onClick={handleIncrement}
-        variant="secondary"
-        className="h-10"
+        variant="outline"
+        className="size-12"
       >
         +
       </Button>
