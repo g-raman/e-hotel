@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
-import { DatePicker } from "./ui/datepicker";
 import { Button } from "./ui/button";
+import { DateRangePicker } from "./ui/daterangepicker";
 
 const SearchBar = () => {
   return (
@@ -14,12 +14,7 @@ const SearchBar = () => {
 
       <div className="flex flex-1 flex-col">
         <label className="my-2 text-gray-500">Check-in</label>
-        <DatePicker className="w-full p-6" />
-      </div>
-
-      <div className="flex flex-1 flex-col">
-        <label className="my-2 text-gray-500">Check-out</label>
-        <DatePicker className="w-full p-6" />
+        <DateRangePicker className="w-full p-6" />
       </div>
 
       <Button className="flex-1 p-6">Search</Button>
