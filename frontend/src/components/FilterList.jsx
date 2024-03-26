@@ -1,3 +1,4 @@
+import Counter from "./ui/Counter";
 import { Checkbox } from "./ui/checkbox";
 
 const amenities = {
@@ -24,25 +25,18 @@ const extendable = {
   extends: "Yes",
 };
 
-const stars = {
-  onestar: "1 star",
-  twostar: "2 star",
-  threestar: "3 star",
-  fourstar: "4 star",
-  fivestar: "5 star",
-};
-
 const filters = {
   amenities: ["Amenities", amenities],
   capacity: ["Bed size", capacity],
   views: ["View", views],
   extendable: ["Extendable", extendable],
-  stars: ["Rating", stars],
 };
 
 const FilterList = () => {
   return (
     <div>
+      <h3 className="text-large pt-4 font-semibold">Rating</h3>
+      <Counter icon="🌟" />
       {Object.keys(filters).map((filter) => {
         return (
           <ul key={filter} className="pt-4">
