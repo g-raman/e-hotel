@@ -1,20 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
 const client = require("./db");
+const customerRoutes = require("./routes/customerRoutes");
 
-app.get("/customers", (req, res) => {
-  client.query(`SELECT * FROM public."Customer"`, (err, result) => {
-    if (!err) {
-      res.send(result.rows);
-    } else {
-      console.log("hello");
-    }
-  });
-  client.end;
-});
+const app = express();
 
 app.use(bodyParser.json());
+app.use("/api/v1/customers", customerRoutes);
 
 app.post("/customers", (req, res) => {
   const customer = req.body;
