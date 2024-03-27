@@ -20,3 +20,22 @@ exports.getAllHotels = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.getCapacityPerHotel = catchAsync(async (req, res, next) => {
+  const query = 'SELECT * FROM "capacity_per_hotel"';
+
+  try {
+    const results = await db.query(query);
+    res.status(200).json({
+      status: "success",
+      data: {
+        results: results.rows,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
