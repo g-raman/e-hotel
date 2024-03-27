@@ -8,27 +8,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use("/api/v1/customers", customerRoutes);
 
-app.post("/customers", (req, res) => {
-  const customer = req.body;
-  console.log(customer);
-  let insertQuery = `INSERT INTO public."Customer"("firstName", "lastName", "addressID", "idType")
-            VALUES ('${customer.firstname}', '${customer.lastname}', '${customer.address}', '${customer.idType}');`;
-
-  client.query(insertQuery, (err, result) => {
-    if (!err) {
-      res.send("Insertion Was Sucessful");
-    } else {
-      console.log("Insertion was not successful");
-      console.log(err);
-      res.status(400).json({
-        data: {
-          status: "error",
-        },
-      });
-    }
-  });
-});
-
 app.post("/employees", (req, res) => {
   const employee = req.body;
   console.log(employee);
