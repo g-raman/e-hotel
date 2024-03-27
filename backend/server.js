@@ -1,37 +1,15 @@
-const express = require('express');
+const express = require("express");
 const client = require("./db");
-const bodyParser = require('body-parser')
-const app = express();
-const PORT = 8082;
- 
-app.listen(PORT, () => {
-    console.log("Server listening on PORT", PORT);
+const app = require("./app");
+const bodyParser = require("body-parser");
+const PORT = 8080;
+
+client.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
 });
 
-client.connect();
-
-app.get("/customers", (req, res)=> {
-    client.query(`SELECT * FROM customers`, (err, result)=> {
-        if (!err) {
-            res.send(result.rows);
-        }
-    });
-    client.end;
+const server = app.listen(PORT, () => {
+  console.log("Server listening on PORT", PORT);
 });
 
-// app.use(bodyParser.json());
-
-// app.post("/customers", (req, res)=> {
-//     const customer = req.body;
-//     console.log(customer)
-//     let insertQuery = `INSERT INTO customers(firstname, lastname, "CustomerID", address, "idType", "registrationDate")
-//             VALUES ('${customer.firstname}', '${customer.lastname}', '${customer.CustomerID}', '${customer.address}', '${customer.idType}', '${customer.registrationDate}');`
-//     client.query(insertQuery, (err, result)=> {
-//         if (!err) {
-//             res.send("Insertion Was Sucessful");
-//         } else{
-//             console.log("Insertion was not successful")
-//         }
-//     });
-//     client.end;
-// });
