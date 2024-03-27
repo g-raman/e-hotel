@@ -66,3 +66,23 @@ exports.createReservation = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.deleteReservationByID = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+
+  const deleteQuery = `DELETE FROM "Reservation" WHERE "reservationID" = $1`;
+  const values = [id];
+
+  try {
+    await db.query(deleteQuery, values);
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});

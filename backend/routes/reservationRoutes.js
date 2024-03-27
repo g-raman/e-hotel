@@ -8,4 +8,5 @@ router
   .get(reservationController.getAllReservations)
   .post(reservationController.createReservation);
 
+router.route("/:id").delete(reservationController.deleteReservationByID);
 module.exports = router;
