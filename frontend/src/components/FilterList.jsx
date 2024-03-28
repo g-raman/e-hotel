@@ -5,13 +5,6 @@ import { useRef } from "react";
 
 const amenities = {};
 
-const capacity = {
-  single: "Twin",
-  double: "Double",
-  queen: "Queen",
-  king: "King",
-};
-
 const views = {
   sea: "Sea View",
   mountain: "Mountain View",
@@ -23,7 +16,6 @@ const extendable = {
 
 const filters = {
   amenities: ["Amenities", amenities],
-  capacity: ["Bed size", capacity],
   views: ["View", views],
   extendable: ["Extendable", extendable],
 };
