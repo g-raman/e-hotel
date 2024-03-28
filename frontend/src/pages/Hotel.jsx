@@ -33,12 +33,12 @@ const Hotel = () => {
         </Card>
       </section>
 
-      <div className="h-full">
+      <Card className="h-full">
         <img
           className="h-auto w-full rounded-sm object-cover"
           src="https://photos.hotelbeds.com/giata/bigger/00/004200/004200a_hb_ro_006.jpg"
         />
-      </div>
+      </Card>
     </main>
   );
 };
