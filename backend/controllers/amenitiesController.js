@@ -7,7 +7,6 @@ exports.getAllAmenities = catchAsync(async (req, res, next) => {
   try {
     const results = await db.query(query);
     const flattened = results.rows.map((amenity) => amenity.amenity);
-    console.log(flattened);
     res.status(200).json({
       status: "success",
       data: {
