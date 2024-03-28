@@ -1,13 +1,9 @@
+import { useFetch } from "@/hooks/useFetch";
 import Counter from "./ui/Counter";
 import { Checkbox } from "./ui/checkbox";
+import { useRef } from "react";
 
-const amenities = {
-  pool: "Swimming pool",
-  tv: "TV",
-  ac: "Air Conditioning",
-  fridge: "Fridge",
-  microwave: "Microwave",
-};
+const amenities = {};
 
 const capacity = {
   single: "Twin",
@@ -32,7 +28,30 @@ const filters = {
   extendable: ["Extendable", extendable],
 };
 
+function slugify(string) {
+  return string.replace(" ", "_").toLowerCase();
+}
+
+const AMENITIES_URL = "http://localhost:8080/api/v1/amenities";
 const FilterList = () => {
+  const isComponentMounted = useRef(true);
+
+  const { data, loading, error } = useFetch(
+    AMENITIES_URL,
+    isComponentMounted,
+    {},
+  );
+
+  if (!loading) {
+    data.data.results.forEach((amenity) => {
+      amenities[slugify(amenity)] = amenity;
+    });
+  }
+
+  if (error) {
+    console.log(error);
+  }
+
   return (
     <div>
       <h3 className="text-large pt-4 font-semibold">Rating</h3>
