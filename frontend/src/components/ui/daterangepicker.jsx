@@ -12,10 +12,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DateRangePicker({ className }) {
+export function DateRangePicker({ className, defaultFromDate, defaultToDate }) {
   const [date, setDate] = React.useState({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: defaultFromDate,
+    to: defaultToDate,
   });
 
   return (
