@@ -8,13 +8,13 @@ import {
   CardTitle,
 } from "./ui/card";
 
-const HotelCard = () => {
+const HotelCard = ({ info }) => {
   return (
     <Card>
       <CardHeader className="p-4">
-        <CardTitle className="text-2xl">Hotel name</CardTitle>
+        <CardTitle className="text-2xl">{info?.HotelChainName}</CardTitle>
         <CardDescription className="text-base">
-          Room description
+          {info?.city}, {info?.province}
         </CardDescription>
       </CardHeader>
 
@@ -25,14 +25,18 @@ const HotelCard = () => {
         />
 
         <div className="flex justify-between text-xl">
-          <span className="text-lg font-semibold">$49 per night</span>
-          <span>🌟 9.0/10</span>
+          <span className="text-lg font-semibold">
+            ${info?.price} per night
+          </span>
+          <span>🌟 {info?.starRating}/5</span>
         </div>
       </CardContent>
 
       <CardFooter className="flex flex-col items-start p-4 pt-0">
-        <span>4 people</span>
-        <span>Sea view</span>
+        <span>
+          {info?.capacity} {info?.capcity === 1 ? "people" : "person"}
+        </span>
+        <span>{info?.viewType}</span>
         <Button className="mt-4 w-full">Book now</Button>
       </CardFooter>
     </Card>
