@@ -73,8 +73,38 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   const endDate = req.query.endDate || TODAY;
 
   let query = `
-    SELECT * FROM "all_room_info"
-    WHERE 
+    SELECT * FROM (
+      SELECT 
+        "hotelID",
+        "HotelChainName",
+        "roomID",
+        "starRating",
+        "capacity",
+        "viewType",
+        "price",
+        "city",
+        "province",
+        "startDate",
+        "endDate",
+        STRING_AGG("amenity"::TEXT, ',') AS "amenities"
+      FROM "all_room_info"
+
+      GROUP BY (
+        "hotelID",
+        "HotelChainName",
+        "roomID",
+        "starRating",
+        "capacity",
+        "viewType",
+        "price",
+        "city",
+        "province",
+        "startDate",
+        "endDate"
+      )
+    )
+
+    WHERE
       "HotelChainName" ~* ''
       AND	"city" ~* $1
       AND "viewType" ~* $2
@@ -93,7 +123,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   const values = [city, viewType, minPrice, maxPrice, startDate, endDate];
 
   if (amenities) {
-    query = query + `AND "amenity" ~* $${values.length + 1}`;
+    query = query + `AND "amenities" ~* $${values.length + 1}`;
     values.push(amenities);
   }
 
