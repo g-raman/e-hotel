@@ -2,10 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Results from "./pages/Results";
 import Hotel from "./pages/Hotel";
+import { SearchProvider } from "./contexts/SearchContext";
 
 function App() {
   return (
-    <div>
+    <SearchProvider>
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
@@ -13,7 +14,7 @@ function App() {
           <Route path="hotel" element={<Hotel />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </SearchProvider>
   );
 }
 

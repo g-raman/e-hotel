@@ -1,7 +1,8 @@
 import { useFetch } from "@/hooks/useFetch";
 import Counter from "./ui/Counter";
 import { Checkbox } from "./ui/checkbox";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearch } from "@/contexts/SearchContext";
 
 const amenities = {};
 
@@ -21,12 +22,15 @@ const filters = {
 };
 
 function slugify(string) {
-  return string.replace(" ", "_").toLowerCase();
+  return string.replaceAll(" ", "_").toLowerCase();
 }
 
 const AMENITIES_URL = "http://localhost:8080/api/v1/amenities";
 const FilterList = () => {
   const isComponentMounted = useRef(true);
+  const { setShouldFetch, query, setQuery } = useSearch();
+  const labelRefs = useRef({});
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
 
   const { data, loading, error } = useFetch(
     AMENITIES_URL,
@@ -44,6 +48,49 @@ const FilterList = () => {
     console.log(error);
   }
 
+  function handleFilterToggle(e) {
+    const checked = !JSON.parse(e.target.ariaChecked);
+    const value = labelRefs[e.target.id].innerText;
+    const category = JSON.parse(labelRefs[e.target.id].dataset["category"]);
+
+    if (category === "amenities") {
+      if (checked) {
+        setSelectedAmenities((filters) => [...filters, value]);
+      } else {
+        setSelectedAmenities((filters) =>
+          filters.filter((item) => item != value),
+        );
+      }
+    }
+  }
+
+  useEffect(
+    function () {
+      const parameterRegex = /amenities=([^&]*)/;
+      const parameterMatch = parameterRegex.exec(query);
+      const parameterResult = parameterMatch ? parameterMatch[1] : "";
+
+      if (parameterResult && selectedAmenities.length != 0) {
+        setQuery((query) => {
+          return (
+            query.replace(parameterRegex, "") +
+            "amenities=" +
+            selectedAmenities.join(",")
+          );
+        });
+      } else if (parameterResult && selectedAmenities.length === 0) {
+        setQuery((query) => query.replace(parameterRegex, ""));
+      } else if (!parameterResult && selectedAmenities.length != 0) {
+        setQuery(
+          (query) => query + "&amenities=" + selectedAmenities.join(","),
+        );
+      }
+
+      setShouldFetch({ current: true });
+    },
+    [query, selectedAmenities, setQuery, setShouldFetch],
+  );
+
   return (
     <div>
       <h3 className="text-large pt-4 font-semibold">Rating</h3>
@@ -56,10 +103,12 @@ const FilterList = () => {
               {Object.keys(filters[filter][1]).map((filterItem) => {
                 return (
                   <li key={filterItem} className="flex items-center space-x-2">
-                    <Checkbox id={filterItem} />
+                    <Checkbox id={filterItem} onClick={handleFilterToggle} />
                     <label
-                      htmlFor="pool"
+                      htmlFor={filterItem}
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      ref={(el) => (labelRefs[filterItem] = el)}
+                      data-category={JSON.stringify(filter)}
                     >
                       {filters[filter][1][filterItem]}
                     </label>
