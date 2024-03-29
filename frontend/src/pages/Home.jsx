@@ -40,7 +40,6 @@ const Home = () => {
       {!isLoading && (
         <div className="flex w-full gap-8">
           {top3cities.map((city) => {
-            console.log(city);
             return (
               <Card key={city} className="relative w-full overflow-hidden">
                 <h2 className="absolute z-10 p-4 text-2xl font-bold text-white">
