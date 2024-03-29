@@ -60,3 +60,55 @@ exports.getAvailableRoomsByCity = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
+  const TODAY = new Date().toLocaleDateString("en-CA");
+
+  const city = req.query.city || "";
+  const viewType = req.query.viewType || "";
+  const amenities = req.query.amenities || "";
+  const minPrice = req.query.minPrice || 0;
+  let maxPrice = req.query.maxPrice || 1000;
+  const startDate = req.query.startDate || TODAY;
+  const endDate = req.query.endDate || TODAY;
+
+  let query = `
+    SELECT * FROM "all_room_info"
+    WHERE 
+      "HotelChainName" ~* ''
+      AND	"city" ~* $1
+      AND "viewType" ~* $2
+      AND "price" BETWEEN $3 AND $4
+      AND ("startDate" != $5
+        OR "startDate" IS NULL
+      )
+      AND ("endDate" != $6
+        OR "endDate" IS NULL
+      )
+  `;
+
+  if (minPrice > maxPrice) {
+    maxPrice = minPrice;
+  }
+  const values = [city, viewType, minPrice, maxPrice, startDate, endDate];
+
+  if (amenities) {
+    query = query + `AND "amenity" ~* $${values.length + 1}`;
+    values.push(amenities);
+  }
+
+  try {
+    const results = await db.query(query, values);
+
+    res.status(200).json({
+      status: "success",
+      data: results.rows,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
