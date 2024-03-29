@@ -12,7 +12,9 @@ const HotelCard = ({ info }) => {
   return (
     <Card>
       <CardHeader className="p-4">
-        <CardTitle className="text-2xl">{info?.HotelChainName}</CardTitle>
+        <CardTitle className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-nowrap text-2xl">
+          {info?.HotelChainName}
+        </CardTitle>
         <CardDescription className="text-base">
           {info?.city}, {info?.province}
         </CardDescription>
