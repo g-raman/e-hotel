@@ -24,6 +24,7 @@ export function Combobox({
   placeholder,
   resultsPlaceholder,
   searchPlaceholder,
+  onHandleChangeValue,
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -54,6 +55,9 @@ export function Combobox({
                 value={item.value}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
+                  onHandleChangeValue(
+                    currentValue === value ? "" : currentValue,
+                  );
                   setOpen(false);
                 }}
               >

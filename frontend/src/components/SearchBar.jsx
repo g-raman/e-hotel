@@ -1,12 +1,12 @@
-import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { DateRangePicker } from "./ui/daterangepicker";
 import Counter from "./ui/Counter";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addDays } from "date-fns";
 import { Combobox } from "./ui/combobox";
 import { useFetch } from "@/hooks/useFetch";
 import slugify from "@/lib/slugify";
+import { useSearch } from "@/contexts/SearchContext";
 
 const defaultDate = new Date();
 const CITIES_URL = "http://localhost:8080/api/v1/hotels/allCities";
@@ -21,11 +21,24 @@ const SearchBar = () => {
   const isMounted = useRef(true);
   const [fromDate, setFromDate] = useState(addDays(defaultDate, 1));
   const [toDate, setToDate] = useState(addDays(defaultDate, 2));
+  const [city, setCity] = useState("");
   const { data, loading, error } = useFetch(CITIES_URL, isMounted, {});
+  const { setShouldFetch, setParams } = useSearch();
+
   let comboboxArray = [];
   if (!loading) {
     comboboxArray = generateComboBoxArray(data.data.results);
   }
+
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, city };
+      });
+      setShouldFetch({ current: true });
+    },
+    [city, setParams, setShouldFetch],
+  );
 
   return (
     <div className="flex w-full min-w-0 items-end justify-center gap-4">
@@ -39,6 +52,7 @@ const SearchBar = () => {
           resultsPlaceholder="No cities found."
           className="p-6"
           data={comboboxArray}
+          onHandleChangeValue={setCity}
         />
       </div>
 
