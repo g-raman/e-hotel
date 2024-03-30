@@ -25,9 +25,9 @@ const filters = {
 const AMENITIES_URL = "http://localhost:8080/api/v1/amenities";
 const FilterList = () => {
   const isComponentMounted = useRef(true);
-  const { setShouldFetch, query, setQuery } = useSearch();
   const labelRefs = useRef({});
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const { setShouldFetch, setParams } = useSearch();
 
   const { data, loading, error } = useFetch(
     AMENITIES_URL,
@@ -41,9 +41,7 @@ const FilterList = () => {
     });
   }
 
-  if (error) {
-    console.log(error);
-  }
+  if (error) console.log(error);
 
   function handleFilterToggle(e) {
     const checked = !JSON.parse(e.target.ariaChecked);
@@ -63,29 +61,12 @@ const FilterList = () => {
 
   useEffect(
     function () {
-      const parameterRegex = /amenities=([^&]*)/;
-      const parameterMatch = parameterRegex.exec(query);
-      const parameterResult = parameterMatch ? parameterMatch[1] : "";
-
-      if (parameterResult && selectedAmenities.length != 0) {
-        setQuery((query) => {
-          return (
-            query.replace(parameterRegex, "") +
-            "amenities=" +
-            selectedAmenities.join(",")
-          );
-        });
-      } else if (parameterResult && selectedAmenities.length === 0) {
-        setQuery((query) => query.replace(parameterRegex, ""));
-      } else if (!parameterResult && selectedAmenities.length != 0) {
-        setQuery(
-          (query) => query + "&amenities=" + selectedAmenities.join(","),
-        );
-      }
-
+      setParams((params) => {
+        return { ...params, amenities: selectedAmenities.join(",") };
+      });
       setShouldFetch({ current: true });
     },
-    [query, selectedAmenities, setQuery, setShouldFetch],
+    [selectedAmenities, setParams, setShouldFetch],
   );
 
   return (
