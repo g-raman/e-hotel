@@ -59,6 +59,26 @@ exports.getAvailableRoomsByCity = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.getViewTypes = catchAsync(async (req, res, next) => {
+  const query = `SELECT DISTINCT "viewType" FROM "Room" ORDER BY "viewType" ASC`;
+
+  try {
+    const results = await db.query(query);
+    const flattened = results.rows.map((viewType) => viewType.viewType);
+    res.status(200).json({
+      status: "success",
+      data: {
+        results: flattened,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
+
 exports.getAllCities = catchAsync(async (req, res, next) => {
   const query = `SELECT "city" FROM "available_rooms_by_city";`;
 
