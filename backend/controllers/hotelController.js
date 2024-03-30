@@ -41,9 +41,7 @@ exports.getCapacityPerHotel = catchAsync(async (req, res, next) => {
 });
 
 exports.getAvailableRoomsByCity = catchAsync(async (req, res, next) => {
-  const query = `
-    SELECT * FROM "available_rooms_by_city" ORDER BY "availableRooms" DESC;
-  `;
+  const query = `SELECT * FROM "available_rooms_by_city" ORDER BY "availableRooms" DESC;`;
 
   try {
     const results = await db.query(query);
@@ -51,6 +49,26 @@ exports.getAvailableRoomsByCity = catchAsync(async (req, res, next) => {
       status: "success",
       data: {
         results: results.rows,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
+
+exports.getAllCities = catchAsync(async (req, res, next) => {
+  const query = `SELECT "city" FROM "available_rooms_by_city";`;
+
+  try {
+    const results = await db.query(query);
+    const flattened = results.rows.map((city) => city.city);
+    res.status(200).json({
+      status: "success",
+      data: {
+        results: flattened,
       },
     });
   } catch (err) {
