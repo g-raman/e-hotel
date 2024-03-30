@@ -28,14 +28,54 @@ exports.createReservation = catchAsync(async (req, res, next) => {
     !reservation.customerID ||
     !reservation.roomID ||
     !reservation.startDate ||
-    !reservation.endDate ||
-    !reservation.rentingPrice
+    !reservation.endDate
   ) {
     res.status(400).json({
       status: "error",
       message: "Ensure all parameters passed in.",
     });
 
+    return next();
+  }
+
+  const roomPriceQuery = `SELECT "price" FROM "Room" WHERE "roomID" = $1`;
+  let roomPrice;
+
+  try {
+    const results = await db.query(roomPriceQuery, [reservation.roomID]);
+    if (results.rowCount != 1) {
+      res.status(500).json({
+        status: "error",
+        message: "Room not found",
+      });
+      return next();
+    }
+    roomPrice = results.rows[0].price;
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+
+    return next();
+  }
+
+  const customerQuery = `SELECT * FROM "Customer" WHERE "customerID" = $1`;
+
+  try {
+    const results = await db.query(customerQuery, [reservation.customerID]);
+    if (results.rowCount != 1) {
+      res.status(500).json({
+        status: "error",
+        message: "Customer not found",
+      });
+      return next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
     return next();
   }
 
@@ -50,7 +90,7 @@ exports.createReservation = catchAsync(async (req, res, next) => {
     reservation.roomID,
     reservation.startDate,
     reservation.endDate,
-    reservation.rentingPrice,
+    roomPrice,
   ];
 
   try {
