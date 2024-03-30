@@ -1,3 +1,4 @@
+import { useFetch } from "@/hooks/useFetch";
 import {
   Table,
   TableBody,
@@ -6,30 +7,46 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { useRef } from "react";
+import Loader from "./Loader";
 
+const PROBLEMS_URL = "http://localhost:8080/api/v1/hotels/bookedRooms";
 const ProblemsTable = () => {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Room ID</TableHead>
-          <TableHead>Problem</TableHead>
-        </TableRow>
-      </TableHeader>
+  const isMounted = useRef(true);
+  const { data, loading, error } = useFetch(PROBLEMS_URL, isMounted, {});
 
-      <TableBody>
-        {Array.from({ length: 5 }).map((_, i) => {
-          return (
-            <TableRow key={i}>
-              <TableCell className="font-medium">{100 + i}</TableCell>
-              <TableCell className="font-medium">
-                Problem 1, Problem 2
-              </TableCell>
+  if (!loading) console.log(data);
+
+  return (
+    <>
+      {loading ? (
+        <div className="flex w-full justify-center">
+          <Loader height={64} width={64} />
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Room ID</TableHead>
+              <TableHead>Problem</TableHead>
             </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+          </TableHeader>
+
+          <TableBody>
+            {data.data.results.map((room) => {
+              return (
+                <TableRow key={`${room.roomID} ${room.endDate}`}>
+                  <TableCell className="font-medium">{room.roomID}</TableCell>
+                  <TableCell className="font-medium">
+                    {room.problem || "None"}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 };
 
