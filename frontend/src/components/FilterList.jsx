@@ -28,6 +28,7 @@ const FilterList = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [selectedViews, setSelectedViews] = useState([]);
   const [rating, setRating] = useState(3);
+  const [extendable, setExtendable] = useState(false);
   const { setShouldFetch, setParams } = useSearch();
 
   const {
@@ -76,6 +77,12 @@ const FilterList = () => {
       } else {
         setSelectedViews((views) => views.filter((item) => item != value));
       }
+    } else if (category === "extendable") {
+      if (checked) {
+        setExtendable(true);
+      } else {
+        setExtendable(false);
+      }
     }
   }
 
@@ -107,6 +114,16 @@ const FilterList = () => {
       setShouldFetch({ current: true });
     },
     [rating, setParams, setShouldFetch],
+  );
+
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, extendable: extendable ? "TRUE" : "" };
+      });
+      setShouldFetch({ current: true });
+    },
+    [extendable, setParams, setShouldFetch],
   );
 
   return (
