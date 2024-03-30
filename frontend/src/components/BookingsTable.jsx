@@ -29,7 +29,9 @@ const BookingsTable = () => {
                 April {20 + i}, 2024 - April {20 + i + 1}, 2024
               </TableCell>
               <TableCell>
-                <Button className="w-full">{i % 2 === 0 ? "Archive" : "Turn to Renting"}</Button>
+                <Button className="w-full">
+                  {i % 2 === 0 ? "Archive" : "Turn to Renting"}
+                </Button>
               </TableCell>
             </TableRow>
           );
