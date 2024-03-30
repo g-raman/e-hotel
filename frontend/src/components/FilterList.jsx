@@ -3,6 +3,7 @@ import Counter from "./ui/Counter";
 import { Checkbox } from "./ui/checkbox";
 import { useEffect, useRef, useState } from "react";
 import { useSearch } from "@/contexts/SearchContext";
+import slugify from "@/lib/slugify";
 
 const amenities = {};
 
@@ -20,10 +21,6 @@ const filters = {
   views: ["View", views],
   extendable: ["Extendable", extendable],
 };
-
-function slugify(string) {
-  return string.replaceAll(" ", "_").toLowerCase();
-}
 
 const AMENITIES_URL = "http://localhost:8080/api/v1/amenities";
 const FilterList = () => {
