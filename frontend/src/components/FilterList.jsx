@@ -24,7 +24,9 @@ const VIEW_TYPE_URL = "http://localhost:8080/api/v1/hotels/allViewTypes";
 const FilterList = () => {
   const isComponentMounted = useRef(true);
   const labelRefs = useRef({});
+
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedViews, setSelectedViews] = useState([]);
   const { setShouldFetch, setParams } = useSearch();
 
   const {
@@ -67,6 +69,12 @@ const FilterList = () => {
           filters.filter((item) => item != value),
         );
       }
+    } else if (category === "views") {
+      if (checked) {
+        setSelectedViews((views) => [...views, value]);
+      } else {
+        setSelectedViews((views) => views.filter((item) => item != value));
+      }
     }
   }
 
@@ -78,6 +86,16 @@ const FilterList = () => {
       setShouldFetch({ current: true });
     },
     [selectedAmenities, setParams, setShouldFetch],
+  );
+
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, viewType: selectedViews.join("|") };
+      });
+      setShouldFetch({ current: true });
+    },
+    [selectedAmenities, selectedViews, setParams, setShouldFetch],
   );
 
   return (

@@ -3,16 +3,18 @@ import { createContext, useState, useContext, useRef } from "react";
 
 const SearchContext = createContext();
 
-const BASE_URL = `http://localhost:8080/api/v1/hotels/search?city=$1&amenities=$2`;
+const BASE_URL = `http://localhost:8080/api/v1/hotels/search?city=$1&amenities=$2&viewType=$3`;
 const defaultParams = {
   city: "",
   amenities: "",
+  viewType: "",
 };
 
 function parametrizeQuery(params) {
   let str = BASE_URL;
   str = str.replace("$1", params.city);
   str = str.replace("$2", params.amenities);
+  str = str.replace("$3", params.viewType);
 
   return str;
 }
