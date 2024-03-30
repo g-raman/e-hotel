@@ -1,3 +1,4 @@
+import { useFetch } from "@/hooks/useFetch";
 import { Button } from "./ui/button";
 import {
   Table,
@@ -7,37 +8,68 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { useRef } from "react";
+import Loader from "./Loader";
 
+const BOOKINGS_URL = "http://localhost:8080/api/v1/hotels/bookedRooms";
+const dateOptions = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
 const BookingsTable = () => {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Room ID</TableHead>
-          <TableHead>Customer</TableHead>
-          <TableHead>Date</TableHead>
-        </TableRow>
-      </TableHeader>
+  const isMounted = useRef(true);
+  const { data, loading, error } = useFetch(BOOKINGS_URL, isMounted, {});
 
-      <TableBody>
-        {Array.from({ length: 5 }).map((_, i) => {
-          return (
-            <TableRow key={i}>
-              <TableCell className="font-medium">{100 + i}</TableCell>
-              <TableCell>Raman Gupta</TableCell>
-              <TableCell>
-                April {20 + i}, 2024 - April {20 + i + 1}, 2024
-              </TableCell>
-              <TableCell>
-                <Button className="w-full">
-                  {i % 2 === 0 ? "Archive" : "Turn to Renting"}
-                </Button>
-              </TableCell>
+  return (
+    <>
+      {loading ? (
+        <div className="flex size-32 w-full items-center justify-center">
+          <Loader height={64} width={64} />
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Room ID</TableHead>
+              <TableHead>Customer</TableHead>
+              <TableHead>Date</TableHead>
             </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+          </TableHeader>
+
+          <TableBody>
+            {data.data.results.map((room) => {
+              return (
+                <TableRow key={`${room.id + room.startDate}`}>
+                  <TableCell className="font-medium">{room.roomID}</TableCell>
+                  <TableCell>
+                    {room.firstName} {room.lastName}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(room.startDate).toLocaleString(
+                      "en-CA",
+                      dateOptions,
+                    )}{" "}
+                    <br />
+                    {new Date(room.endDate).toLocaleString(
+                      "en-CA",
+                      dateOptions,
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button className="w-full">
+                      {new Date() <= new Date(room.endDate)
+                        ? "Check-In"
+                        : "Check-Out"}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 };
 
