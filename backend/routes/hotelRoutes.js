@@ -10,5 +10,6 @@ router.get("/availableRoomsByCity", hotelController.getAvailableRoomsByCity);
 router.get("/allCities", hotelController.getAllCities);
 router.get("/allViewTypes", hotelController.getViewTypes);
 router.get("/search", hotelController.getHotelsAndFilter);
+router.get("/bookedRooms", hotelController.getBookedRooms);
 
 module.exports = router;

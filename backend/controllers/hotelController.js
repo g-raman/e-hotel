@@ -99,6 +99,35 @@ exports.getAllCities = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.getBookedRooms = catchAsync(async (req, res, next) => {
+  const query = `
+    SELECT 
+    "Reservation"."roomID", "Reservation"."startDate", 
+    "Reservation"."endDate",
+    "firstName", "lastName", "problem"
+    FROM "booked_rooms_employee"
+    INNER JOIN "Reservation" ON 
+    "Reservation"."reservationID" = "booked_rooms_employee"."reservationID"
+    INNER JOIN "Customer" ON
+    "Reservation"."customerID" = "Customer"."customerID"
+  `;
+
+  try {
+    const results = await db.query(query);
+    res.status(200).json({
+      status: "success",
+      data: {
+        results: results.rows,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
+
 exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   const TODAY = new Date().toLocaleDateString("en-CA");
 
