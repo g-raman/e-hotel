@@ -152,10 +152,12 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
       AND	"city" ~* $1
       AND "viewType" ~* $2
       AND "price" BETWEEN $3 AND $4
-      AND ("startDate" != $5
+      AND (
+        $5 NOT BETWEEN "startDate" AND "endDate"
         OR "startDate" IS NULL
       )
-      AND ("endDate" != $6
+      AND (
+        $6 NOT BETWEEN "startDate" AND "endDate"
         OR "endDate" IS NULL
       )
       AND "capacity" >= $7
