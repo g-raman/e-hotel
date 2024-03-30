@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Results from "./pages/Results";
 import Hotel from "./pages/Hotel";
 import { SearchProvider } from "./contexts/SearchContext";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="results" element={<Results />} />
           <Route path="hotel" element={<Hotel />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </SearchProvider>
