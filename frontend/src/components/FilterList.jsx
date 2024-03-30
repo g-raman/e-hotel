@@ -7,10 +7,7 @@ import slugify from "@/lib/slugify";
 
 const amenities = {};
 
-const views = {
-  sea: "Sea View",
-  mountain: "Mountain View",
-};
+const views = {};
 
 const extendable = {
   extends: "Yes",
@@ -23,25 +20,39 @@ const filters = {
 };
 
 const AMENITIES_URL = "http://localhost:8080/api/v1/amenities";
+const VIEW_TYPE_URL = "http://localhost:8080/api/v1/hotels/allViewTypes";
 const FilterList = () => {
   const isComponentMounted = useRef(true);
   const labelRefs = useRef({});
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const { setShouldFetch, setParams } = useSearch();
 
-  const { data, loading, error } = useFetch(
-    AMENITIES_URL,
-    isComponentMounted,
-    {},
-  );
+  const {
+    data: amenitiesData,
+    loading: amenitiesLoading,
+    error: amenitiesError,
+  } = useFetch(AMENITIES_URL, isComponentMounted, {});
 
-  if (!loading) {
-    data.data.results.forEach((amenity) => {
+  const {
+    data: viewTypesData,
+    loading: viewTypesLoading,
+    error: viewTypesError,
+  } = useFetch(VIEW_TYPE_URL, isComponentMounted, {});
+
+  if (!amenitiesLoading) {
+    amenitiesData.data.results.forEach((amenity) => {
       amenities[slugify(amenity)] = amenity;
     });
   }
 
-  if (error) console.log(error);
+  if (!viewTypesLoading) {
+    viewTypesData.data.results.forEach((viewType) => {
+      views[slugify(viewType)] = viewType;
+    });
+  }
+
+  if (amenitiesError) console.log(amenitiesError);
+  if (viewTypesError) console.log(viewTypesError);
 
   function handleFilterToggle(e) {
     const checked = !JSON.parse(e.target.ariaChecked);
