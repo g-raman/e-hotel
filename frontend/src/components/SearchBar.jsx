@@ -19,9 +19,12 @@ function generateComboBoxArray(items) {
 
 const SearchBar = () => {
   const isMounted = useRef(true);
+
   const [fromDate, setFromDate] = useState(addDays(defaultDate, 1));
   const [toDate, setToDate] = useState(addDays(defaultDate, 2));
   const [city, setCity] = useState("");
+  const [capacity, setCapacity] = useState(1);
+
   const { data, loading, error } = useFetch(CITIES_URL, isMounted, {});
   const { setShouldFetch, setParams } = useSearch();
 
@@ -38,6 +41,16 @@ const SearchBar = () => {
       setShouldFetch({ current: true });
     },
     [city, setParams, setShouldFetch],
+  );
+
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, capacity };
+      });
+      setShouldFetch({ current: true });
+    },
+    [capacity, setParams, setShouldFetch],
   );
 
   return (
@@ -67,7 +80,13 @@ const SearchBar = () => {
 
       <div className="flex h-full w-full flex-col">
         <label className="my-2 text-gray-500">Guests</label>
-        <Counter min={1} max={10} icon="🧑" />
+        <Counter
+          onIncrement={() => setCapacity((capacity) => capacity + 1)}
+          onDecrement={() => setCapacity((capacity) => capacity - 1)}
+          min={1}
+          max={10}
+          icon="🧑"
+        />
       </div>
 
       <Button className="w-1/3 p-6">Search</Button>

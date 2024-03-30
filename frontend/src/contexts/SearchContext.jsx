@@ -3,11 +3,12 @@ import { createContext, useState, useContext, useRef } from "react";
 
 const SearchContext = createContext();
 
-const BASE_URL = `http://localhost:8080/api/v1/hotels/search?city=$1&amenities=$2&viewType=$3`;
+const BASE_URL = `http://localhost:8080/api/v1/hotels/search?city=$1&amenities=$2&viewType=$3&capacity=$4`;
 const defaultParams = {
   city: "",
   amenities: "",
   viewType: "",
+  capacity: "",
 };
 
 function parametrizeQuery(params) {
@@ -15,6 +16,7 @@ function parametrizeQuery(params) {
   str = str.replace("$1", params.city);
   str = str.replace("$2", params.amenities);
   str = str.replace("$3", params.viewType);
+  str = str.replace("$4", params.capacity);
 
   return str;
 }
@@ -22,7 +24,6 @@ function parametrizeQuery(params) {
 function SearchProvider({ children }) {
   const [params, setParams] = useState(defaultParams);
   const [shouldFetch, setShouldFetch] = useState({ current: true });
-  console.log(parametrizeQuery(params));
 
   const { data, loading, error } = useFetch(
     parametrizeQuery(params, BASE_URL),
