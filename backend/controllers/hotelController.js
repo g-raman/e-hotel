@@ -111,6 +111,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   const endDate = req.query.endDate || TODAY;
   const capacity = req.query.capacity || 1;
   const rating = req.query.rating || 3;
+  const extendable = req.query.extendable || "";
 
   let query = `
     SELECT * FROM (
@@ -124,6 +125,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
         "price",
         "city",
         "province",
+        "isExtendable",
         "startDate",
         "endDate",
         STRING_AGG("amenity"::TEXT, ',') AS "amenities"
@@ -139,6 +141,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
         "price",
         "city",
         "province",
+        "isExtendable",
         "startDate",
         "endDate"
       )
@@ -177,6 +180,10 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   if (amenities) {
     query = query + `AND "amenities" ~* $${values.length + 1}`;
     values.push(amenities);
+  }
+
+  if (extendable === "TRUE") {
+    query = query + `AND "isExtendable" = TRUE`;
   }
 
   try {
