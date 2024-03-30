@@ -109,6 +109,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   let maxPrice = req.query.maxPrice || 1000;
   const startDate = req.query.startDate || TODAY;
   const endDate = req.query.endDate || TODAY;
+  const capacity = req.query.capacity || 1;
 
   let query = `
     SELECT * FROM (
@@ -153,12 +154,22 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
       AND ("endDate" != $6
         OR "endDate" IS NULL
       )
+      AND "capacity" >= $7
   `;
 
   if (minPrice > maxPrice) {
     maxPrice = minPrice;
   }
-  const values = [city, viewType, minPrice, maxPrice, startDate, endDate];
+
+  const values = [
+    city,
+    viewType,
+    minPrice,
+    maxPrice,
+    startDate,
+    endDate,
+    capacity,
+  ];
 
   if (amenities) {
     query = query + `AND "amenities" ~* $${values.length + 1}`;
