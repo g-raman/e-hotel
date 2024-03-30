@@ -27,6 +27,7 @@ const FilterList = () => {
 
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [selectedViews, setSelectedViews] = useState([]);
+  const [rating, setRating] = useState(3);
   const { setShouldFetch, setParams } = useSearch();
 
   const {
@@ -95,13 +96,31 @@ const FilterList = () => {
       });
       setShouldFetch({ current: true });
     },
-    [selectedAmenities, selectedViews, setParams, setShouldFetch],
+    [selectedViews, setParams, setShouldFetch],
+  );
+
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, rating };
+      });
+      setShouldFetch({ current: true });
+    },
+    [rating, setParams, setShouldFetch],
   );
 
   return (
     <div>
       <h3 className="text-large pt-4 font-semibold">Rating</h3>
-      <Counter icon="🌟" />
+      <Counter
+        onIncrement={() => setRating((rating) => rating + 1)}
+        onDecrement={() => setRating((rating) => rating - 1)}
+        min={1}
+        max={5}
+        defaultValue={rating}
+        icon="🌟"
+      />
+
       {Object.keys(filters).map((filter) => {
         return (
           <ul key={filter} className="pt-4">
