@@ -34,11 +34,13 @@ const BookingsTable = () => {
               <TableHead className="w-[100px]">Room ID</TableHead>
               <TableHead>Customer</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {data.data.results.map((room) => {
+              console.log(room);
               return (
                 <TableRow key={`${room.id + room.startDate}`}>
                   <TableCell className="font-medium">{room.roomID}</TableCell>
@@ -55,6 +57,10 @@ const BookingsTable = () => {
                       "en-CA",
                       dateOptions,
                     )}
+                  </TableCell>
+                  <TableCell>
+                    {room.status?.charAt(0)?.toUpperCase() +
+                      room.status?.slice(1)}
                   </TableCell>
                   <TableCell>
                     <CheckInButton id={room.reservationID} />
