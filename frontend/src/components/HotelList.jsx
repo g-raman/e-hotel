@@ -18,7 +18,7 @@ const HotelList = () => {
           No results found...
         </p>
       ) : (
-        hotels.map((hotel) => {
+        hotels?.map((hotel) => {
           return (
             <HotelCard
               key={`${hotel.roomID} ${hotel.startDate} ${hotel.hotelID}`}

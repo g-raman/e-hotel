@@ -17,13 +17,7 @@ const BookButton = ({ roomID, className, children }) => {
 
   const { params } = useSearch();
 
-  const { data } = useFetch(
-    CREATE_BOOKING_ENDPOINT,
-    shouldConvert,
-    {},
-    fetchOptions,
-  );
-  console.log(data);
+  useFetch(CREATE_BOOKING_ENDPOINT, shouldConvert, {}, fetchOptions);
 
   function handleClick() {
     const body = {
