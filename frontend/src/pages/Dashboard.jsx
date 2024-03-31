@@ -12,7 +12,7 @@ const Dashboard = () => {
 
   return (
     <section className="grid h-dvh grid-cols-3 grid-rows-[1fr_4fr] gap-8 px-16 py-10">
-      <Card className="col-span-2 row-span-1 overflow-y-scroll p-4">
+      <Card className="col-span-2 row-span-2 overflow-y-scroll p-4">
         <Tabs className="w-full" defaultValue="bookings">
           <TabsList className="grid w-full grid-cols-2 bg-zinc-200">
             <TabsTrigger
