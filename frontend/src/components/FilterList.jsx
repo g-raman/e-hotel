@@ -4,6 +4,7 @@ import { Checkbox } from "./ui/checkbox";
 import { useEffect, useRef, useState } from "react";
 import { useSearch } from "@/contexts/SearchContext";
 import slugify from "@/lib/slugify";
+import { Input } from "./ui/input";
 
 const amenities = {};
 const views = {};
@@ -32,6 +33,8 @@ const FilterList = () => {
   const [selectedChains, setSelectedChains] = useState([]);
   const [rating, setRating] = useState(3);
   const [extendable, setExtendable] = useState(false);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const { setShouldFetch, setParams } = useSearch();
 
   const {
@@ -108,6 +111,26 @@ const FilterList = () => {
     }
   }
 
+  function handleMinPriceChange(e) {
+    const num = parseInt(e.target.value);
+    if (!isNaN(num) && num >= 0 && num <= 1000) {
+      setMinPrice(num);
+    }
+    if (e.target.value === "") {
+      setMinPrice("");
+    }
+  }
+
+  function handleMaxPriceHange(e) {
+    const num = parseInt(e.target.value);
+    if (!isNaN(num) && num >= 0 && num <= 1000) {
+      setMaxPrice(num);
+    }
+    if (e.target.value === "") {
+      setMaxPrice("");
+    }
+  }
+
   useEffect(
     function () {
       setParams((params) => {
@@ -158,6 +181,16 @@ const FilterList = () => {
     [selectedChains, setParams, setShouldFetch],
   );
 
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, minPrice, maxPrice };
+      });
+      setShouldFetch({ current: true });
+    },
+    [minPrice, maxPrice, setParams, setShouldFetch],
+  );
+
   return (
     <div>
       <h3 className="text-large pt-4 font-semibold">Rating</h3>
@@ -169,6 +202,32 @@ const FilterList = () => {
         defaultValue={rating}
         icon="🌟"
       />
+
+      <div className="my-4 flex flex-col">
+        <label className="font-semibold">Min Price ($0 - $1000)</label>
+        <Input
+          value={minPrice}
+          onChange={handleMinPriceChange}
+          className="bg-white"
+          placeholder="Min Price"
+          type="number"
+          min={0}
+          max={1000}
+        />
+      </div>
+
+      <div>
+        <label className="font-semibold">Max Price ($0 - $1000)</label>
+        <Input
+          value={maxPrice}
+          onChange={handleMaxPriceHange}
+          className="bg-white"
+          placeholder="Max Price"
+          type="number"
+          min={0}
+          max={1000}
+        />
+      </div>
 
       {Object.keys(filters).map((filter) => {
         return (

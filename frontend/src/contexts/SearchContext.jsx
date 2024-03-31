@@ -4,7 +4,7 @@ import { createContext, useState, useContext, useRef } from "react";
 const SearchContext = createContext();
 
 const BASE_URL =
-  "http://localhost:8080/api/v1/hotels/search?city=$1&amenities=$2&viewType=$3&capacity=$4&rating=$5&extendable=$6&chains=$7";
+  "http://localhost:8080/api/v1/hotels/search?city=$1&amenities=$2&viewType=$3&capacity=$4&rating=$5&extendable=$6&chains=$7&minPrice=$8&maxPrice=$9";
 const defaultParams = {
   city: "",
   amenities: "",
@@ -13,6 +13,8 @@ const defaultParams = {
   rating: "3",
   extendable: "",
   chains: "",
+  minPrice: "",
+  maxPrice: "",
 };
 
 function parametrizeQuery(params) {
@@ -24,6 +26,8 @@ function parametrizeQuery(params) {
   str = str.replace("$5", params.rating);
   str = str.replace("$6", params.extendable);
   str = str.replace("$7", params.chains);
+  str = str.replace("$8", params.minPrice);
+  str = str.replace("$9", params.maxPrice);
 
   return str;
 }
