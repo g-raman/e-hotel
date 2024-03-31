@@ -103,8 +103,8 @@ exports.getBookedRooms = catchAsync(async (req, res, next) => {
   const query = `
     SELECT 
     "Reservation"."roomID", "Reservation"."startDate", 
-    "Reservation"."endDate",
-    "firstName", "lastName", "problem"
+    "Reservation"."endDate", "Reservation"."reservationID",
+    "firstName", "lastName", "problem", "status"
     FROM "booked_rooms_employee"
     INNER JOIN "Reservation" ON 
     "Reservation"."reservationID" = "booked_rooms_employee"."reservationID"
