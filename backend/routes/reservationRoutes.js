@@ -8,8 +8,10 @@ router
   .get(reservationController.getAllReservations)
   .post(reservationController.createReservation);
 
+router.post("/defaultBook", reservationController.createDefaultRenting);
+
 router
   .route("/:id")
-  .delete(reservationController.deleteReservationByID)
+  .delete(reservationController.deleteReservation)
   .patch(reservationController.convertToRenting);
 module.exports = router;
