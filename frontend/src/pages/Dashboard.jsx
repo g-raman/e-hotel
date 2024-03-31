@@ -1,6 +1,6 @@
 import AddReservationForm from "@/components/AddReservationForm";
 import BookingsTable from "@/components/BookingsTable";
-import HotelCapacityList from "@/components/HotelCapacityList";
+import CapacityPerHotel from "@/components/CapacityPerHotel";
 import ProblemsTable from "@/components/ProblemsTable";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
@@ -44,7 +44,7 @@ const Dashboard = () => {
 
       <AddReservationForm className="col-span-2" />
       <Card className="col-span-2 overflow-y-scroll p-4">
-        <HotelCapacityList />
+        <CapacityPerHotel />
       </Card>
     </section>
   );
