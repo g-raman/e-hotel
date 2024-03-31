@@ -68,7 +68,6 @@ exports.createEmployee = catchAsync(async (req, res, next) => {
 
 exports.deleteEmployeeByID = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
 
   const deleteQuery = `DELETE FROM "Employee" WHERE "SIN" = $1`;
   const values = [id];
