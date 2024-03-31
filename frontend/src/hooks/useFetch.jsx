@@ -15,6 +15,7 @@ export const useFetch = (url, ref, initialValue, options = {}) => {
           } else {
             res = await fetch(url);
           }
+          console.log(url);
           const data = await res.json();
           setData(data);
         } catch (err) {

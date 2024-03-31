@@ -54,6 +54,7 @@ const CheckInButton = ({ id }) => {
 
   return (
     <PaymentDialog
+      triggerText="Check-in"
       details={details}
       onChange={handleChange}
       onSubmit={handleClick}

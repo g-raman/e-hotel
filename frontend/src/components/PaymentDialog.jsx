@@ -9,11 +9,11 @@ import {
   DialogHeader,
 } from "./ui/dialog";
 
-const PaymentDialog = ({ details, onSubmit, onChange }) => {
+const PaymentDialog = ({ triggerText, details, onSubmit, onChange }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Check-in</Button>
+        <Button className="w-full">{triggerText}</Button>
       </DialogTrigger>
 
       <DialogContent className="">
