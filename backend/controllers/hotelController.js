@@ -100,17 +100,7 @@ exports.getAllCities = catchAsync(async (req, res, next) => {
 });
 
 exports.getBookedRooms = catchAsync(async (req, res, next) => {
-  const query = `
-    SELECT 
-    "Reservation"."roomID", "Reservation"."startDate", 
-    "Reservation"."endDate", "Reservation"."reservationID",
-    "firstName", "lastName", "problem", "status"
-    FROM "booked_rooms_employee"
-    INNER JOIN "Reservation" ON 
-    "Reservation"."reservationID" = "booked_rooms_employee"."reservationID"
-    INNER JOIN "Customer" ON
-    "Reservation"."customerID" = "Customer"."customerID"
-  `;
+  const query = `SELECT * FROM "all_bookings_info"`;
 
   try {
     const results = await db.query(query);
@@ -121,6 +111,26 @@ exports.getBookedRooms = catchAsync(async (req, res, next) => {
       },
     });
   } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
+
+exports.getBookedRoomsWithProblems = catchAsync(async (req, res, next) => {
+  const query = `SELECT "roomID", "problem" FROM "booked_rooms_employee"`;
+
+  try {
+    const results = await db.query(query);
+    res.status(200).json({
+      status: "success",
+      data: {
+        results: results.rows,
+      },
+    });
+  } catch (err) {
+    console.log(err);
     res.status(500).json({
       status: "error",
       message: err.message,

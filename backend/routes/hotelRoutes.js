@@ -12,5 +12,9 @@ router.get("/allViewTypes", hotelController.getViewTypes);
 router.get("/search", hotelController.getHotelsAndFilter);
 router.get("/bookedRooms", hotelController.getBookedRooms);
 router.get("/chains", hotelController.getHotelChains);
+router.get(
+  "/bookedRoomsWithProblems",
+  hotelController.getBookedRoomsWithProblems,
+);
 
 module.exports = router;

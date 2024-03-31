@@ -154,7 +154,6 @@ exports.convertToRenting = catchAsync(async (req, res, next) => {
 
 exports.createDefaultRenting = catchAsync(async (req, res, next) => {
   const info = req.body;
-  console.log(info);
 
   if (!info.roomID || !info.startDate || !info.endDate) {
     res.status(400).json({
