@@ -12,12 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DateRangePicker({ className, defaultFromDate, defaultToDate }) {
-  const [date, setDate] = React.useState({
-    from: defaultFromDate,
-    to: defaultToDate,
-  });
-
+export function DateRangePicker({ className, onSetDate, date }) {
   return (
     <div className={"grid gap-2"}>
       <Popover>
@@ -52,7 +47,9 @@ export function DateRangePicker({ className, defaultFromDate, defaultToDate }) {
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={(date) => {
+              onSetDate(date);
+            }}
             numberOfMonths={2}
           />
         </PopoverContent>

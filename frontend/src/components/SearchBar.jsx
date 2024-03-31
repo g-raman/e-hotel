@@ -53,6 +53,11 @@ const SearchBar = () => {
     [capacity, setParams, setShouldFetch],
   );
 
+  function handleSetDate(date) {
+    setFromDate(date.from);
+    setToDate(date.to);
+  }
+
   return (
     <div className="flex w-full min-w-0 items-end justify-center gap-4">
       <div className="flex w-full flex-col">
@@ -73,8 +78,8 @@ const SearchBar = () => {
         <label className="my-2 text-gray-500">Check-in</label>
         <DateRangePicker
           className="p-6"
-          defaultFromDate={fromDate}
-          defaultToDate={toDate}
+          onSetDate={handleSetDate}
+          date={{ from: fromDate, to: toDate }}
         />
       </div>
 
