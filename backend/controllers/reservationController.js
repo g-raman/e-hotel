@@ -28,7 +28,11 @@ exports.createReservation = catchAsync(async (req, res, next) => {
     !reservation.customerID ||
     !reservation.roomID ||
     !reservation.startDate ||
-    !reservation.endDate
+    !reservation.endDate ||
+    !reservation.creditCardNumber ||
+    !reservation.creditCardExpiry ||
+    !reservation.creditCardCVV ||
+    !reservation.status
   ) {
     res.status(400).json({
       status: "error",
@@ -81,9 +85,10 @@ exports.createReservation = catchAsync(async (req, res, next) => {
 
   const insertQuery = `
     INSERT INTO "Reservation" (
-      "customerID", "roomID", "startDate", "endDate", "rentingPrice"
+      "customerID", "roomID", "startDate", "endDate", "rentingPrice",
+      "creditCardNumber", "creditCardExpiry", "creditCardCVV", "status"
     ) VALUES (
-      $1, $2, $3, $4, $5
+      $1, $2, $3, $4, $5, $6, $7, $8, $9
     );`;
   const values = [
     reservation.customerID,
@@ -91,9 +96,14 @@ exports.createReservation = catchAsync(async (req, res, next) => {
     reservation.startDate,
     reservation.endDate,
     roomPrice,
+    reservation.creditCardNumber,
+    reservation.creditCardExpiry,
+    reservation.creditCardCVV,
+    reservation.status,
   ];
 
   try {
+    console.log("here");
     await db.query(insertQuery, values);
     res.status(200).json({
       status: "success",
@@ -134,9 +144,32 @@ exports.deleteReservation = catchAsync(async (req, res, next) => {
 
 exports.convertToRenting = catchAsync(async (req, res, next) => {
   const id = req.params.id;
+  const reservation = req.body;
 
-  const query = `UPDATE "Reservation" SET "status" = 'renting' WHERE "reservationID" = $1;`;
-  const values = [id];
+  if (
+    !reservation.creditCardNumber ||
+    !reservation.creditCardExpiry ||
+    !reservation.creditCardCVV
+  ) {
+    res.status(400).json({
+      status: "error",
+      message: "Ensure all parameters are passed in",
+    });
+    return next();
+  }
+
+  const query = `
+    UPDATE "Reservation" 
+    SET 
+    "status" = 'renting', "creditCardNumber" = $2,
+    "creditCardExpiry" = $3, "creditCardCVV" = $4
+    WHERE "reservationID" = $1;`;
+  const values = [
+    id,
+    reservation.creditCardNumber,
+    reservation.creditCardExpiry,
+    reservation.creditCardCVV,
+  ];
 
   try {
     await db.query(query, values);
