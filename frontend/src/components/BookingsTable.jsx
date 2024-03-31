@@ -1,5 +1,4 @@
 import { useFetch } from "@/hooks/useFetch";
-import { Button } from "./ui/button";
 import {
   Table,
   TableBody,
@@ -10,6 +9,7 @@ import {
 } from "./ui/table";
 import { useRef } from "react";
 import Loader from "./Loader";
+import CheckInButton from "./CheckInButton";
 
 const BOOKINGS_URL = "http://localhost:8080/api/v1/hotels/bookedRooms";
 const dateOptions = {
@@ -57,11 +57,7 @@ const BookingsTable = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Button className="w-full">
-                      {new Date() <= new Date(room.endDate)
-                        ? "Check-In"
-                        : "Check-Out"}
-                    </Button>
+                    <CheckInButton id={room.reservationID} />
                   </TableCell>
                 </TableRow>
               );
