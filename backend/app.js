@@ -8,11 +8,13 @@ const employeeRouter = require("./routes/employeeRoutes");
 const reservationRouter = require("./routes/reservationRoutes");
 const hotelRouter = require("./routes/hotelRoutes");
 const amenitiesRouter = require("./routes/amenitiesRoutes");
+const morgan = require("morgan");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(morgan("dev"));
 
 app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/employees", employeeRouter);
