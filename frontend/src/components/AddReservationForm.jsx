@@ -15,9 +15,9 @@ import { useFetch } from "@/hooks/useFetch";
 import { addDays } from "date-fns";
 
 const fetchOptions = {
-  method: "POST",
+  method: "post",
   headers: {
-    "Content-Type": "application/json",
+    "content-type": "application/json",
   },
 };
 

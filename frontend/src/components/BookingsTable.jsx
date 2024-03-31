@@ -10,6 +10,7 @@ import {
 import { useRef } from "react";
 import Loader from "./Loader";
 import CheckInButton from "./CheckInButton";
+import CheckOutButton from "./CheckOutButton";
 
 const BOOKINGS_URL = "http://localhost:8080/api/v1/hotels/bookedRooms";
 const dateOptions = {
@@ -40,7 +41,18 @@ const BookingsTable = () => {
 
           <TableBody>
             {data.data.results.map((room) => {
-              console.log(room);
+              const startDate = new Date(room.startDate);
+              const endDate = new Date(room.endDate);
+              const currDate = new Date();
+              startDate.setHours(0, 0, 0, 0);
+              endDate.setHours(0, 0, 0, 0);
+              currDate.setHours(0, 0, 0, 0);
+
+              const shouldDisplayCheckIn =
+                currDate.getTime() === startDate.getTime();
+              const shouldDisplayCheckOut =
+                currDate.getTime() >= startDate.getTime() &&
+                currDate.getTime() <= endDate.getTime();
               return (
                 <TableRow key={`${room.id + room.startDate}`}>
                   <TableCell className="font-medium">{room.roomID}</TableCell>
@@ -63,7 +75,11 @@ const BookingsTable = () => {
                       room.status?.slice(1)}
                   </TableCell>
                   <TableCell>
-                    <CheckInButton id={room.reservationID} />
+                    {shouldDisplayCheckIn ? (
+                      <CheckInButton id={room.reservationID} />
+                    ) : shouldDisplayCheckOut ? (
+                      <CheckOutButton id={room.reservationID} />
+                    ) : null}
                   </TableCell>
                 </TableRow>
               );
