@@ -10,12 +10,11 @@ import {
 import { useRef } from "react";
 import Loader from "./Loader";
 
-const PROBLEMS_URL = "http://localhost:8080/api/v1/hotels/bookedRooms";
+const PROBLEMS_URL =
+  "http://localhost:8080/api/v1/hotels/bookedRoomsWithProblems";
 const ProblemsTable = () => {
   const isMounted = useRef(true);
   const { data, loading, error } = useFetch(PROBLEMS_URL, isMounted, {});
-
-  if (!loading) console.log(data);
 
   return (
     <>
@@ -33,7 +32,7 @@ const ProblemsTable = () => {
           </TableHeader>
 
           <TableBody>
-            {data.data.results.map((room) => {
+            {data?.data?.results?.map((room) => {
               return (
                 <TableRow key={`${room.roomID} ${room.endDate}`}>
                   <TableCell className="font-medium">{room.roomID}</TableCell>
