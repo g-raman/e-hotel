@@ -48,6 +48,7 @@ function SearchProvider({ children }) {
         data,
         loading,
         error,
+        params,
         setShouldFetch,
         setParams,
       }}

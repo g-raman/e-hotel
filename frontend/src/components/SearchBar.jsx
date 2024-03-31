@@ -58,6 +58,16 @@ const SearchBar = () => {
     setToDate(date.to);
   }
 
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, startDate: fromDate, endDate: toDate };
+      });
+      setShouldFetch({ current: true });
+    },
+    [fromDate, setParams, setShouldFetch, toDate],
+  );
+
   return (
     <div className="flex w-full min-w-0 items-end justify-center gap-4">
       <div className="flex w-full flex-col">

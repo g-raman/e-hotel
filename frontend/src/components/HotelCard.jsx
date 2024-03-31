@@ -1,3 +1,4 @@
+import BookButton from "./BookButton";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -39,7 +40,9 @@ const HotelCard = ({ info }) => {
           {info?.capacity} {info?.capcity === 1 ? "people" : "person"}
         </span>
         <span>{info?.viewType}</span>
-        <Button className="mt-4 w-full">Book now</Button>
+        <BookButton className="mt-4 w-full" roomID={info.roomID}>
+          Book Now
+        </BookButton>
       </CardFooter>
     </Card>
   );
