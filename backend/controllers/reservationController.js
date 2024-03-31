@@ -44,7 +44,7 @@ exports.createReservation = catchAsync(async (req, res, next) => {
   try {
     const results = await db.query(roomPriceQuery, [reservation.roomID]);
     if (results.rowCount != 1) {
-      res.status(500).json({
+      res.status(400).json({
         status: "error",
         message: "Room not found",
       });
@@ -52,7 +52,7 @@ exports.createReservation = catchAsync(async (req, res, next) => {
     }
     roomPrice = results.rows[0].price;
   } catch (err) {
-    res.status(500).json({
+    res.status(400).json({
       status: "error",
       message: err.message,
     });
@@ -65,14 +65,14 @@ exports.createReservation = catchAsync(async (req, res, next) => {
   try {
     const results = await db.query(customerQuery, [reservation.customerID]);
     if (results.rowCount != 1) {
-      res.status(500).json({
+      res.status(400).json({
         status: "error",
         message: "Customer not found",
       });
       return next();
     }
   } catch (err) {
-    res.status(500).json({
+    res.status(400).json({
       status: "error",
       message: err.message,
     });
@@ -95,14 +95,19 @@ exports.createReservation = catchAsync(async (req, res, next) => {
 
   try {
     await db.query(insertQuery, values);
-    res.status(204).json({
+    res.status(200).json({
       status: "success",
+      message: "Room created successfully",
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    const message =
+      err.code === "23505"
+        ? "Room is booked for that date range."
+        : err.message;
+
+    res.status(400).json({
       status: "error",
-      message: err.message,
+      message,
     });
   }
 });

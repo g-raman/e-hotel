@@ -128,6 +128,26 @@ exports.getBookedRooms = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.getHotelChains = catchAsync(async (req, res, next) => {
+  const query = `SELECT "name" FROM "HotelChain"`;
+
+  try {
+    const results = await db.query(query);
+    const flattened = results.rows.map((name) => name.name);
+    res.status(200).json({
+      status: "success",
+      data: {
+        results: flattened,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
+
 exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   const TODAY = new Date().toLocaleDateString("en-CA");
 
