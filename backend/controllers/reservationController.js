@@ -3,7 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 
 exports.getAllReservations = catchAsync(async (req, res, next) => {
   const query = `
-    SELECT "reservationID", "customerID", "roomID", "startDate", "endDate", "rentingPrice"
+    SELECT "reservationID", "customerID", "roomID", "startDate", "endDate", "rentingPrice", "status"
     FROM "Reservation"
   `;
 
@@ -120,6 +120,26 @@ exports.deleteReservationByID = catchAsync(async (req, res, next) => {
 
   try {
     await db.query(deleteQuery, values);
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+});
+
+exports.convertToRenting = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+
+  const query = `UPDATE "Reservation" SET "status" = 'renting' WHERE "reservationID" = $1;`;
+  const values = [id];
+
+  try {
+    await db.query(query, values);
     res.status(204).json({
       status: "success",
     });
