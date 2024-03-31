@@ -1,5 +1,6 @@
 import AddReservationForm from "@/components/AddReservationForm";
 import BookingsTable from "@/components/BookingsTable";
+import HotelCapacityList from "@/components/HotelCapacityList";
 import ProblemsTable from "@/components/ProblemsTable";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
@@ -11,8 +12,8 @@ const Dashboard = () => {
   const activeClasses = "bg-white text-black rounded-sm";
 
   return (
-    <section className="grid h-dvh grid-cols-3 grid-rows-[1fr_4fr] gap-8 px-16 py-10">
-      <Card className="col-span-2 row-span-2 overflow-y-scroll p-4">
+    <section className="grid h-dvh grid-cols-5 grid-rows-[1fr_4fr] gap-8 px-16 py-10">
+      <Card className="col-span-3 row-span-2 overflow-y-scroll p-4">
         <Tabs className="w-full" defaultValue="bookings">
           <TabsList className="grid w-full grid-cols-2 bg-zinc-200">
             <TabsTrigger
@@ -41,7 +42,10 @@ const Dashboard = () => {
         </Tabs>
       </Card>
 
-      <AddReservationForm />
+      <AddReservationForm className="col-span-2" />
+      <Card className="col-span-2 overflow-y-scroll p-4">
+        <HotelCapacityList />
+      </Card>
     </section>
   );
 };

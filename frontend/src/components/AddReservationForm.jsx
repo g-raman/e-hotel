@@ -12,7 +12,7 @@ import { Input } from "./ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useFetch } from "@/hooks/useFetch";
-import { addDays } from "date-fns";
+import { addDays, clamp } from "date-fns";
 import PaymentDialog from "./PaymentDialog";
 
 const fetchOptions = {
@@ -23,7 +23,7 @@ const fetchOptions = {
 };
 
 const RESERVATION_URL = "http://localhost:8080/api/v1/reservations";
-const AddReservationForm = () => {
+const AddReservationForm = ({ className }) => {
   const [shouldFetch, setShouldFetch] = useState({ current: false });
   const [roomID, setRoomID] = useState("");
   const [customerID, setCusomterID] = useState("");
@@ -101,7 +101,7 @@ const AddReservationForm = () => {
   }
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>Add a new reservation</CardTitle>
       </CardHeader>
