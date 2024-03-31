@@ -19,7 +19,12 @@ const HotelList = () => {
         </p>
       ) : (
         hotels.map((hotel) => {
-          return <HotelCard key={hotel.roomID} info={hotel} />;
+          return (
+            <HotelCard
+              key={`${hotel.roomID} ${hotel.startDate} ${hotel.hotelID}`}
+              info={hotel}
+            />
+          );
         })
       )}
     </div>

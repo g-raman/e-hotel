@@ -6,14 +6,15 @@ import { useSearch } from "@/contexts/SearchContext";
 import slugify from "@/lib/slugify";
 
 const amenities = {};
-
 const views = {};
+const chains = {};
 
 const extendable = {
   extends: "Yes",
 };
 
 const filters = {
+  chains: ["Chains", chains],
   amenities: ["Amenities", amenities],
   views: ["View", views],
   extendable: ["Extendable", extendable],
@@ -21,12 +22,14 @@ const filters = {
 
 const AMENITIES_URL = "http://localhost:8080/api/v1/amenities";
 const VIEW_TYPE_URL = "http://localhost:8080/api/v1/hotels/allViewTypes";
+const HOTEL_CHAIN_URL = "http://localhost:8080/api/v1/hotels/chains";
 const FilterList = () => {
   const isComponentMounted = useRef(true);
   const labelRefs = useRef({});
 
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [selectedViews, setSelectedViews] = useState([]);
+  const [selectedChains, setSelectedChains] = useState([]);
   const [rating, setRating] = useState(3);
   const [extendable, setExtendable] = useState(false);
   const { setShouldFetch, setParams } = useSearch();
@@ -43,6 +46,12 @@ const FilterList = () => {
     error: viewTypesError,
   } = useFetch(VIEW_TYPE_URL, isComponentMounted, {});
 
+  const {
+    data: hotelChainData,
+    loading: hotelChainLoading,
+    error: hotelChainError,
+  } = useFetch(HOTEL_CHAIN_URL, isComponentMounted, {});
+
   if (!amenitiesLoading) {
     amenitiesData.data.results.forEach((amenity) => {
       amenities[slugify(amenity)] = amenity;
@@ -55,8 +64,15 @@ const FilterList = () => {
     });
   }
 
+  if (!hotelChainLoading) {
+    hotelChainData.data.results.forEach((chain) => {
+      chains[slugify(chain)] = chain;
+    });
+  }
+
   if (amenitiesError) console.log(amenitiesError);
   if (viewTypesError) console.log(viewTypesError);
+  if (hotelChainError) console.log(hotelChainError);
 
   function handleFilterToggle(e) {
     const checked = !JSON.parse(e.target.ariaChecked);
@@ -82,6 +98,12 @@ const FilterList = () => {
         setExtendable(true);
       } else {
         setExtendable(false);
+      }
+    } else if (category === "chains") {
+      if (checked) {
+        setSelectedChains((chains) => [...chains, value]);
+      } else {
+        setSelectedChains((chains) => chains.filter((item) => item != value));
       }
     }
   }
@@ -124,6 +146,16 @@ const FilterList = () => {
       setShouldFetch({ current: true });
     },
     [extendable, setParams, setShouldFetch],
+  );
+
+  useEffect(
+    function () {
+      setParams((params) => {
+        return { ...params, chains: selectedChains.join("|") };
+      });
+      setShouldFetch({ current: true });
+    },
+    [selectedChains, setParams, setShouldFetch],
   );
 
   return (
