@@ -215,7 +215,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   `;
 
   if (minPrice > maxPrice) {
-    maxPrice = minPrice;
+    maxPrice = 1000;
   }
 
   const values = [
