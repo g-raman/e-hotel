@@ -22,13 +22,12 @@ const fetchOptions = {
 };
 
 const RESERVATION_URL = "http://localhost:8080/api/v1/reservations";
-const defaultDate = addDays(new Date(), 1);
 const AddReservationForm = () => {
   const [shouldFetch, setShouldFetch] = useState({ current: false });
   const [roomID, setRoomID] = useState("");
   const [customerID, setCusomterID] = useState("");
-  const [startDate, setStartDate] = useState(defaultDate);
-  const [endDate, setEndDate] = useState(addDays(defaultDate, 1));
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const data = {
     roomID,
@@ -48,8 +47,8 @@ const AddReservationForm = () => {
     fetchOptions.body = JSON.stringify(data);
     setShouldFetch({ current: true });
 
-    setStartDate(defaultDate);
-    setEndDate(addDays(defaultDate, 1));
+    setStartDate("");
+    setEndDate(addDays("", 1));
     setRoomID("");
     setCusomterID("");
   }
@@ -58,8 +57,6 @@ const AddReservationForm = () => {
     setStartDate(date.from);
     setEndDate(date.to);
   }
-
-  console.log(result);
 
   return (
     <Card>
