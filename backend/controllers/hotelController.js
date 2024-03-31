@@ -161,6 +161,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
   const capacity = req.query.capacity || 1;
   const rating = req.query.rating || 3;
   const extendable = req.query.extendable || "";
+  const chains = req.query.chains || "";
 
   let query = `
     SELECT * FROM (
@@ -197,8 +198,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
     )
 
     WHERE
-      "HotelChainName" ~* ''
-      AND	"city" ~* $1
+      "city" ~* $1
       AND "viewType" ~* $2
       AND "price" BETWEEN $3 AND $4
       AND (
@@ -211,6 +211,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
       )
       AND "capacity" >= $7
       AND "starRating" >= $8
+      AND "HotelChainName" ~* $9
   `;
 
   if (minPrice > maxPrice) {
@@ -226,6 +227,7 @@ exports.getHotelsAndFilter = catchAsync(async (req, res, next) => {
     endDate,
     capacity,
     rating,
+    chains,
   ];
 
   if (amenities) {
