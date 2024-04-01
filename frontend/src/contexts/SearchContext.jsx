@@ -59,6 +59,7 @@ function parametrizeQuery(params) {
 function SearchProvider({ children }) {
   const [params, setParams] = useState(defaultParams);
   const [shouldFetch, setShouldFetch] = useState({ current: true });
+  console.log(params);
 
   const { data, loading, error } = useFetch(
     parametrizeQuery(params, BASE_URL),

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { DateRangePicker } from "./ui/daterangepicker";
 import Counter from "./ui/Counter";
@@ -19,6 +20,7 @@ function generateComboBoxArray(items) {
 
 const SearchBar = () => {
   const isMounted = useRef(true);
+  const navigate = useNavigate();
 
   const [fromDate, setFromDate] = useState(addDays(defaultDate, 1));
   const [toDate, setToDate] = useState(addDays(defaultDate, 2));
@@ -104,7 +106,9 @@ const SearchBar = () => {
         />
       </div>
 
-      <Button className="w-1/3 p-6">Search</Button>
+      <Button onClick={() => navigate("/results")} className="w-1/3 p-6">
+        Search
+      </Button>
     </div>
   );
 };
