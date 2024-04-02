@@ -21,8 +21,6 @@ const CapacityPerHotel = () => {
     {},
   );
 
-  if (!loading) console.log(data);
-
   return (
     <Table>
       <TableHeader>

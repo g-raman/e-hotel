@@ -10,6 +10,7 @@ import {
 } from "./ui/card";
 
 const HotelCard = ({ info }) => {
+  console.log(info);
   return (
     <Card>
       <CardHeader className="p-4">
@@ -24,7 +25,7 @@ const HotelCard = ({ info }) => {
       <CardContent className="px-4 py-0">
         <img
           className="mb-4 aspect-square w-full rounded-sm bg-auto object-cover "
-          src="https://photos.hotelbeds.com/giata/bigger/00/004200/004200a_hb_ro_006.jpg"
+          src={info.imageURL}
         />
 
         <div className="flex justify-between text-xl">

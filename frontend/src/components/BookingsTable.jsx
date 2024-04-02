@@ -48,9 +48,9 @@ const BookingsTable = () => {
               endDate.setHours(0, 0, 0, 0);
               currDate.setHours(0, 0, 0, 0);
 
-              // const shouldDisplayCheckIn =
-              //   currDate.getTime() === startDate.getTime();
-              const shouldDisplayCheckIn = true;
+              const shouldDisplayCheckIn =
+                currDate.getTime() === startDate.getTime();
+              // const shouldDisplayCheckIn = true;
               const shouldDisplayCheckOut =
                 currDate.getTime() >= startDate.getTime() &&
                 currDate.getTime() <= endDate.getTime();
