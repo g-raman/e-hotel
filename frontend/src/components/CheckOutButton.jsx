@@ -20,7 +20,11 @@ const CheckOutButton = ({ id }) => {
     setShouldFetch({ current: true });
   }
 
-  return <Button onClick={handleClick}>Check-out</Button>;
+  return (
+    <Button className="w-full" onClick={handleClick}>
+      Check-out
+    </Button>
+  );
 };
 
 export default CheckOutButton;
